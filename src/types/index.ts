@@ -14,6 +14,7 @@ export interface Chat {
   updated_at: string;
   last_message?: string;
   last_message_time?: string;
+  last_message_read?: boolean;
   chat_type: 'direct' | 'group';
   is_demo?: boolean;
   is_internal?: boolean;

@@ -13,7 +13,10 @@ import {
   FiUsers,
   FiRefreshCw,
   FiMessageCircle,
-  FiStar
+  FiStar,
+  FiHelpCircle,
+  FiChevronDown,
+  FiShare
 } from 'react-icons/fi';
 import { Chat, User } from '@/types';
 import ChatItem from './ChatItem';
@@ -112,14 +115,21 @@ export default function ChatList({
             <FiMessageCircle className="text-gray-400" />
             <span className="text-sm font-medium">chats</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button className="text-gray-500 hover:text-gray-700">
               <FiRefreshCw size={16} />
+            </button>
+            <button className="text-gray-500 hover:text-gray-700">
+              <FiHelpCircle size={16} />
             </button>
             <div className="flex items-center gap-1 text-sm text-gray-500">
               <FiStar className="text-yellow-400" size={16} />
               <span>5 / 6 phones</span>
+              <FiChevronDown size={14} className="text-gray-400" />
             </div>
+            <button className="text-gray-500 hover:text-gray-700">
+              <FiShare size={16} />
+            </button>
           </div>
         </div>
         

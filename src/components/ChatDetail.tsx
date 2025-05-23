@@ -19,7 +19,13 @@ import {
   FiPaperclip,
   FiSmile,
   FiClock,
-  FiSend
+  FiSend,
+  FiImage,
+  FiMic,
+  FiLink2,
+  FiCornerUpRight,
+  FiChevronUp,
+  FiShare
 } from 'react-icons/fi';
 import { format } from 'date-fns';
 
@@ -147,22 +153,92 @@ export default function ChatDetail({ chat, user }: ChatDetailProps) {
     }
   };
   
-  // Generate a random phone number for demo purposes
-  const phoneNumber = `+91 ${Math.floor(10000 + Math.random() * 90000)} ${Math.floor(10000 + Math.random() * 90000)}`;
+  // Use a fixed phone number for demo purposes to avoid hydration errors
+  const phoneNumber = "+91 94422 63231";
+  
+  // Use a fixed date for demo purposes to avoid hydration errors
+  const demoDate = "23-01-2025";
+  
+  // Generate demo messages
+  const getDemoMessages = () => {
+    if (messages.length > 0) return messages;
+    
+    return [
+      {
+        id: "1",
+        chat_id: chat.id,
+        user_id: "other",
+        content: "Hello, South Euna!",
+        created_at: "2025-01-23T08:01:00.000Z",
+        updated_at: "2025-01-23T08:01:00.000Z",
+        is_read: true,
+        profiles: {
+          full_name: "Roshnaq Airtel",
+          avatar_url: null
+        }
+      },
+      {
+        id: "2",
+        chat_id: chat.id,
+        user_id: "other",
+        content: "CDERT",
+        created_at: "2025-01-23T08:01:00.000Z",
+        updated_at: "2025-01-23T08:01:00.000Z",
+        is_read: true,
+        profiles: {
+          full_name: "Roshnaq Airtel",
+          avatar_url: null
+        }
+      },
+      {
+        id: "3",
+        chat_id: chat.id,
+        user_id: user?.id || "self",
+        content: "Hello, Livonia!",
+        created_at: "2025-01-23T08:01:00.000Z",
+        updated_at: "2025-01-23T08:01:00.000Z",
+        is_read: true
+      },
+      {
+        id: "4",
+        chat_id: chat.id,
+        user_id: user?.id || "self",
+        content: "test el centro",
+        created_at: "2025-01-23T08:01:00.000Z",
+        updated_at: "2025-01-23T08:01:00.000Z",
+        is_read: true
+      },
+      {
+        id: "5",
+        chat_id: chat.id,
+        user_id: user?.id || "self",
+        content: "testing",
+        created_at: "2025-01-23T08:01:00.000Z",
+        updated_at: "2025-01-23T08:01:00.000Z",
+        is_read: true
+      }
+    ] as (Message & {
+      profiles?: {
+        full_name: string;
+        avatar_url: string | null;
+      };
+    })[];
+  };
+  
+  const demoMessages = getDemoMessages();
   
   return (
     <div className="flex-1 flex flex-col bg-white">
       <div className="py-2 px-4 border-b border-gray-200 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-sm font-medium">
             {chat.title.charAt(0)}
           </div>
           <div>
-            <h2 className="font-medium text-gray-900 text-sm">{chat.title}</h2>
+            <h2 className="font-medium text-gray-900">{chat.title}</h2>
             <div className="flex items-center gap-1 text-xs text-gray-500">
               <span className="flex items-center gap-0.5">
-                <FiPhone size={10} />
-                <span>{phoneNumber}</span>
+                <span>Roshnaq Airtel, Roshnaq Jio, Bharat Kumar Ramesh, Periskope</span>
               </span>
             </div>
           </div>
@@ -176,7 +252,7 @@ export default function ChatDetail({ chat, user }: ChatDetailProps) {
             <FiHelpCircle size={16} />
           </button>
           <button className="text-gray-400 hover:text-gray-600">
-            <FiMoreHorizontal size={16} />
+            <FiShare size={16} />
           </button>
         </div>
       </div>
@@ -186,24 +262,24 @@ export default function ChatDetail({ chat, user }: ChatDetailProps) {
           <div className="flex items-center justify-center h-full">
             <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-green-500"></div>
           </div>
-        ) : messages.length === 0 ? (
+        ) : demoMessages.length === 0 ? (
           <div className="flex items-center justify-center h-full text-gray-500 text-sm">
             No messages yet
           </div>
         ) : (
           <div className="space-y-3">
             {/* Date separator */}
-            <div className="flex justify-center">
+            <div className="flex justify-center mb-4">
               <div className="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">
-                {format(new Date(), 'dd-MM-yyyy')}
+                {demoDate}
               </div>
             </div>
             
-            {messages.map((message) => (
+            {demoMessages.map((message) => (
               <MessageItem
                 key={message.id}
                 message={message}
-                isOwnMessage={message.user_id === user?.id}
+                isOwnMessage={message.user_id === user?.id || message.user_id === "self"}
               />
             ))}
             <div ref={messagesEndRef} />
@@ -249,10 +325,13 @@ export default function ChatDetail({ chat, user }: ChatDetailProps) {
               <FiSmile size={18} />
             </button>
             <button className="hover:text-gray-600">
-              <FiClock size={18} />
+              <FiImage size={18} />
+            </button>
+            <button className="hover:text-gray-600">
+              <FiMic size={18} />
             </button>
             <button 
-              className={`p-1 rounded-full ${messageText.trim() ? 'bg-green-500 text-white' : 'text-gray-400'}`}
+              className={`p-1.5 rounded-full ${messageText.trim() ? 'bg-green-500 text-white' : 'text-gray-400'}`}
               onClick={() => handleSendMessage(messageText)}
               disabled={!messageText.trim()}
             >
